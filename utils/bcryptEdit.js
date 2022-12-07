@@ -25,18 +25,17 @@ function validatePassword(password, res) {
     }
 }
 
-function bcryptEdit(id, email, name, password, req, next) {
-    if (password) {
-        bcrypt
-            .genSalt(saltRounds)
-            .then((salt) => bcrypt.hash(password, salt))
-            .then((hashedPassword) => {
-                return UserModel.findByIdAndUpdate(id, { email, name, password: hashedPassword }, { new: true })
-            })
-            .catch(next)
-    } else {
-        return UserModel.findByIdAndUpdate(id, { email, name }, { new: true })
-    }
+function bcryptEdit(id, username, email, password, req) {
+    return bcrypt
+        .genSalt(saltRounds)
+        .then((salt) => bcrypt.hash(password, salt))
+        .then((hashedPassword) => {
+            if (password) {
+                return UserModel.findByIdAndUpdate(id, { username, email, password: hashedPassword }, { new: true })
+            } else {
+                return UserModel.findByIdAndUpdate(id, { username, email }, { new: true })
+            }
+        })
 }
 
 function catchError(error, res, next) {

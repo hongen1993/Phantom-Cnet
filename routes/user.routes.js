@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const validateToken = require("../middleware/validateToken.middleware");
+// const validateToken = require("../middleware/validateToken.middleware");
 
 // const rolesValidation = require('../middleware/roles.middleware');
 // const { ADMIN } = require('../const/user.const');
@@ -10,10 +10,10 @@ const { getAllUsers, getUser, editUser } = require('../controller/user.controlle
 
 router.get('/all', getAllUsers)
 
-router.get('/profile', validateToken, getUser)
+router.get('/:id', getUser)
 
 //----------------------------- PUT---------------------------------//
 
-router.put('/edit-profile/:id', validateToken, editUser)
+router.put('/profile/edit/:id', editUser)
 
 module.exports = router

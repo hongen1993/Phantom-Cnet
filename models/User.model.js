@@ -18,15 +18,15 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required."],
     },
-    taskCard: [{
-      title: {
-        type: String,
-        required: true
-      },
-      tasks: {
-        type: String,
-      }
-    }],
+    // taskCard: [{
+    //   title: {
+    //     type: String,
+    //     required: true
+    //   },
+    //   tasks: {
+    //     type: String,
+    //   }
+    // }],
     role: {
       type: String,
       enum: ENUM_ROLES,

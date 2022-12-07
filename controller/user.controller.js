@@ -1,7 +1,6 @@
 const { isValidObjectId } = require('mongoose');
 const UserModel = require('../models/User.model');
-const { validateEmail, validatePassword, bcryptEdit, catchError } = require('../utils/bcryptEdit');
-
+const { validateEmail, validatePassword, bcryptEdit } = require('../utils/bcryptEdit');
 
 const UNVALID_ID = (id) => {
     if (!isValidObjectId(id)) {
@@ -56,21 +55,21 @@ const getUser = (req, res, next) => {
 
 const editUser = (req, res, next) => {
     try {
-        const id = req.session.currentUser._id;
-        const { email, name, password } = req.body;
+        const { id, email, name, password } = req.params
 
         UNVALID_ID(id)
         validateEmail(email, res)
         validatePassword(password, res)
         bcryptEdit(id, email, name, password, next)
-            .then((user) => {
-                req.session.currentUser = user.toObject()
-                delete req.session.currentUser.password
+            .then(() => {
                 res.redirect(req.get('referer'));
             })
-            .catch((error) => catchError(error, res, next, "profile"))
+            .then(() => {
+                res.sendStatus(204);
+
+            })
     }
-    catch {
+    catch (err) {
         res.status(400).json({ errorMessage: err.message })
     }
 }
