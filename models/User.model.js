@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose")
 const { ENUM_ROLES, USER } = require('../const/user.const');
+const validator = require('validator')
 
 const userSchema = new Schema(
   {
@@ -9,6 +10,8 @@ const userSchema = new Schema(
       unique: true,
       lowercase: true,
       trim: true,
+      maxLength: [30, ' your email cannot exceed 30 characters'],
+      validate: [validator.isEmail, 'Please enter valid email address']
     },
     name: {
       type: String,
@@ -17,16 +20,16 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, "Password is required."],
+      minLength: [6, 'Your password must be longer than 6 characters']
     },
-    // taskCard: [{
-    //   title: {
-    //     type: String,
-    //     required: true
-    //   },
-    //   tasks: {
-    //     type: String,
-    //   }
-    // }],
+    image: {
+      public_id: {
+        type: String,
+      },
+      url: {
+        type: String
+      }
+    },
     role: {
       type: String,
       enum: ENUM_ROLES,

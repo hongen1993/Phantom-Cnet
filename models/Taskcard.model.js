@@ -4,20 +4,22 @@ const taskcardSchema = new Schema(
     {
         title: {
             type: String,
-            required: [true, "Title is required."],
-            unique: true,
-            lowercase: true,
+            required: [true, "Project title is required."],
             trim: true,
+            maxLength: [30, 'Title name cant exceed 30 characters']
         },
         tasks: {
             type: String,
+            default: 'Insert project task'
         },
+        user: { type: Schema.Types.ObjectId, ref: 'User' },
     },
     {
         timestamps: true,
         versionKey: false
     }
-);
-const TaskModel = model("Taskcard", taskcardSchema)
+)
 
-module.exports = TaskModel
+const TaskcardModel = model("Taskcard", taskcardSchema)
+
+module.exports = TaskcardModel

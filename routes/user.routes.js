@@ -1,19 +1,33 @@
 const router = require('express').Router();
-// const validateToken = require("../middleware/validateToken.middleware");
+const { validateToken, authorizeRoles } = require("../middleware/validateToken.middleware");
 
-// const rolesValidation = require('../middleware/roles.middleware');
-// const { ADMIN } = require('../const/user.const');
+const { ADMIN } = require('../const/user.const');
 
-const { getAllUsers, getUser, editUser } = require('../controller/user.controller');
+const { getAllUsers, getUser, getProfile, newTaskcard, editUser, getTaskcard, editTaskcard, deleteTaskcard } = require('../controller/user.controller');
 
-//----------------------------- GET---------------------------------//
+//----------------------------- GET --------------------------------//
 
-router.get('/all', getAllUsers)
+router.get('/all',/**authorizeRoles(ADMIN)*/ getAllUsers)
 
-router.get('/:id', getUser)
+router.get('/:id', /**validateToken,*/ getUser)
 
-//----------------------------- PUT---------------------------------//
+router.get('/profile/:id', /**validateToken,*/ getProfile)
 
-router.put('/profile/edit/:id', editUser)
+
+router.get('/taskcard/:id', validateToken, getTaskcard)
+
+//----------------------------- POST -------------------------------//
+
+router.post('/newTaskcard', validateToken, newTaskcard)
+
+//----------------------------- PUT --------------------------------//
+
+router.put('/editProfile/:id', validateToken, editUser)
+
+router.put('/editTaskcard/:id', validateToken, editTaskcard)
+
+//----------------------------- DELETE -----------------------------//
+
+router.delete('/:id', validateToken, deleteTaskcard)
 
 module.exports = router
