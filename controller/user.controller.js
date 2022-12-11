@@ -141,6 +141,24 @@ const editUser = (req, res, next) => {
     }
 }
 
+const deleteUser = (req, res, next) => {
+    try {
+        const { id } = req.params
+        if (!isValidObjectId) {
+            throw new Error('Error:Invalid mongo ID')
+        }
+        UserModel
+            .findByIdAndDelete(id)
+            .then(() => {
+                res.sendStatus(204)
+            })
+            .catch(next)
+    } catch (err) {
+        res.status(400).json({ errorMessage: err.message })
+    }
+
+}
+
 const newTaskcard = (req, res, next) => {
     try {
         const { title, tasks, } = req.query
@@ -223,4 +241,4 @@ const deleteTaskcard = (req, res, next) => {
 
 }
 
-module.exports = { getAllUsers, getUser, getProfile, newTaskcard, editUser, getTaskcard, editTaskcard, deleteTaskcard }
+module.exports = { getAllUsers, getUser, getProfile, newTaskcard, editUser, deleteUser, getTaskcard, editTaskcard, deleteTaskcard }

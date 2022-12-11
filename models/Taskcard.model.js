@@ -8,9 +8,14 @@ const taskcardSchema = new Schema(
             trim: true,
             maxLength: [30, 'Title name cant exceed 30 characters']
         },
-        tasks: {
-            type: String,
-            default: 'Insert project task'
+        toDo: {
+            type: [String],
+        },
+        inProcess: {
+            type: [String],
+        },
+        done: {
+            type: [String],
         },
         user: { type: Schema.Types.ObjectId, ref: 'User' },
     },
