@@ -1,6 +1,6 @@
 const { isValidObjectId } = require('mongoose');
 const UserModel = require('../models/User.model');
-const TaskcardModel = require('../models/Taskcard.model')
+const ProjectModel = require('../models/Project.model')
 const { bcryptEdit } = require('../utils/bcryptEdit');
 
 const UNVALID_ID = (id) => {
@@ -48,28 +48,28 @@ const getUser = (req, res, next) => {
             .findById(id)
             .then((foundUser) => {
                 const user = foundUser
-                TaskcardModel
+                ProjectModel
                     .find({ user: user.id })
                     // .limit(limit)
                     // .skip(limit * offset)
                     // .sort({ createdAt: -1 })
                     .lean()
-                    // .then((taskcardsData) => {
-                    //     taskcards = taskcardsData
-                    //     return TaskcardModel.countDocuments()
+                    // .then((projectsData) => {
+                    //     projects = projectsData
+                    //     return ProjectModel.countDocuments()
                     // })
-                    // .then((countedTaskscards) => {
+                    // .then((countedProjects) => {
                     //     res.status(200).json({
                     //         success: true,
-                    //         results: { taskcards, user },
+                    //         results: { projects, user },
                     //         page: +offset,
-                    //         maxPage: Math.floor(countedTaskscards / +limit),
+                    //         maxPage: Math.floor(countedProjects / +limit),
                     //     })
                     // })
-                    .then((taskcards) => {
+                    .then((projects) => {
                         res.status(200).json({
                             success: true,
-                            results: { taskcards, user },
+                            results: { projects, user },
                         })
                     })
             })
@@ -90,28 +90,28 @@ const getProfile = (req, res, next) => {
             .findById(id)
             .then((foundUser) => {
                 const user = foundUser
-                TaskcardModel
+                ProjectModel
                     .find({ user: user.id })
                     // .limit(limit)
                     // .skip(limit * offset)
                     // .sort({ createdAt: -1 })
                     .lean()
-                    // .then((taskcardsData) => {
-                    //     taskcards = taskcardsData
-                    //     return TaskcardModel.countDocuments()
+                    // .then((projectsData) => {
+                    //     projects = projectsData
+                    //     return ProjectModel.countDocuments()
                     // })
-                    // .then((countedTaskscards) => {
+                    // .then((countedProjects) => {
                     //     res.status(200).json({
                     //         success: true,
-                    //         results: { taskcards, user },
+                    //         results: { projects, user },
                     //         page: +offset,
-                    //         maxPage: Math.floor(countedTaskscards / +limit),
+                    //         maxPage: Math.floor(countedProjects / +limit),
                     //     })
                     // })
-                    .then((taskcards) => {
+                    .then((projects) => {
                         res.status(200).json({
                             success: true,
-                            results: { taskcards, user },
+                            results: { projects, user },
                         })
                     })
             })
@@ -159,19 +159,19 @@ const deleteUser = (req, res, next) => {
 
 }
 
-const newTaskcard = (req, res, next) => {
+const newProject = (req, res, next) => {
     try {
-        const { title, tasks, } = req.query
+        const { title, lists, } = req.query
         const userProfileId = req.user._id;
 
         UNVALID_ID(userProfileId)
 
-        TaskcardModel
-            .create({ title, tasks, user: userProfileId })
+        ProjectModel
+            .create({ title, lists, user: userProfileId })
             .then(() => {
                 res.status(201).json({
                     success: true,
-                    message: 'This route is for create task cards'
+                    message: 'Project created'
                 })
             })
             .catch(next)
@@ -180,16 +180,16 @@ const newTaskcard = (req, res, next) => {
     }
 }
 
-const getTaskcard = (req, res, next) => {
+const getProject = (req, res, next) => {
     try {
         const { id } = req.params
 
-        TaskcardModel
+        ProjectModel
             .findById(id)
-            .then((taskcard) => {
+            .then((project) => {
                 res.status(200).json({
                     success: true,
-                    taskcard
+                    project
                 })
             })
             .catch(next)
@@ -198,19 +198,19 @@ const getTaskcard = (req, res, next) => {
     }
 }
 
-const editTaskcard = (req, res, next) => {
+const editProject = (req, res, next) => {
     try {
         const { id } = req.params
-        const { title, tasks } = req.query
+        const { title, lists } = req.query
 
         UNVALID_ID(id)
 
-        TaskcardModel
-            .findByIdAndUpdate(id, { title, tasks })
+        ProjectModel
+            .findByIdAndUpdate(id, { title, lists })
             .then(() => {
                 res.status(204).json({
                     success: true,
-                    message: 'Edited taskcard succesfully'
+                    message: 'Project edited succesfully'
                 })
             })
             .catch(next);
@@ -219,19 +219,19 @@ const editTaskcard = (req, res, next) => {
     }
 }
 
-const deleteTaskcard = (req, res, next) => {
+const deleteProject = (req, res, next) => {
 
     try {
         const { id } = req.params
 
         UNVALID_ID(id)
 
-        TaskcardModel
+        ProjectModel
             .findByIdAndDelete(id)
             .then(() => {
                 res.sendStatus(204).json({
                     success: true,
-                    message: 'Taskcard deleted succesfully'
+                    message: 'Project deleted succesfully'
                 })
             })
             .catch(next)
@@ -241,4 +241,4 @@ const deleteTaskcard = (req, res, next) => {
 
 }
 
-module.exports = { getAllUsers, getUser, getProfile, newTaskcard, editUser, deleteUser, getTaskcard, editTaskcard, deleteTaskcard }
+module.exports = { getAllUsers, getUser, getProfile, newProject, editUser, deleteUser, getProject, editProject, deleteProject }

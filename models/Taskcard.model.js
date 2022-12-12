@@ -2,29 +2,14 @@ const { Schema, model } = require("mongoose")
 
 const taskcardSchema = new Schema(
     {
-        title: {
+        task: {
             type: String,
-            required: [true, "Project title is required."],
-            trim: true,
-            maxLength: [30, 'Title name cant exceed 30 characters']
+            default: 'Insert task'
         },
-        toDo: {
-            type: [String],
-        },
-        inProcess: {
-            type: [String],
-        },
-        done: {
-            type: [String],
-        },
-        user: { type: Schema.Types.ObjectId, ref: 'User' },
-    },
-    {
-        timestamps: true,
-        versionKey: false
+        list: { type: Schema.Types.ObjectId, ref: 'Project' },
     }
 )
 
-const TaskcardModel = model("Taskcard", taskcardSchema)
+const TaskcardModel = model('Taskcard', taskcardSchema)
 
 module.exports = TaskcardModel
