@@ -4,22 +4,21 @@ const projectsSchema = new Schema(
     {
         title: {
             type: String,
-            required: [true, "Project title is required."],
+            required: true,
             trim: true,
-            maxLength: [30, 'Title name cant exceed 30 characters']
+            maxLength: [30, 'Title name cant exceed 30 characters'],
+            default: 'Insert project title'
         },
-        listA: [{
-            type: String,
-            default: 'To do'
-        }],
-        listB: [{
-            type: String,
-            default: 'In process'
-        }],
-        listC: [{
-            type: String,
-            default: 'Done'
-        }],
+        toDo: {
+            type: [String],
+            default: 'Insert task'
+        },
+        inProcess: {
+            type: [String],
+        },
+        done: {
+            type: [String],
+        },
         user: { type: Schema.Types.ObjectId, ref: 'User' },
     },
     {

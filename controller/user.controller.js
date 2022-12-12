@@ -161,13 +161,13 @@ const deleteUser = (req, res, next) => {
 
 const newProject = (req, res, next) => {
     try {
-        const { title, lists, } = req.query
+        const { title, toDo, inProcess, done } = req.body
         const userProfileId = req.user._id;
 
         UNVALID_ID(userProfileId)
 
         ProjectModel
-            .create({ title, lists, user: userProfileId })
+            .create({ title, toDo, inProcess, done, user: userProfileId })
             .then(() => {
                 res.status(201).json({
                     success: true,
@@ -201,12 +201,12 @@ const getProject = (req, res, next) => {
 const editProject = (req, res, next) => {
     try {
         const { id } = req.params
-        const { title, lists } = req.query
+        const { title, toDo, inProcess, done } = req.body
 
         UNVALID_ID(id)
 
         ProjectModel
-            .findByIdAndUpdate(id, { title, lists })
+            .findByIdAndUpdate(id, { title, toDo, inProcess, done })
             .then(() => {
                 res.status(204).json({
                     success: true,

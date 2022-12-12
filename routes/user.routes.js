@@ -7,17 +7,17 @@ const { getAllUsers, getUser, getProfile, editUser, deleteUser, getProject, newP
 
 //----------------------------- GET --------------------------------//
 
-router.get('/all',/**authorizeRoles(ADMIN)*/ getAllUsers)
+router.get('/all', validateToken, authorizeRoles(ADMIN), getAllUsers)
 
-router.get('/:id', /**validateToken,*/ getUser)
+router.get('/:id', validateToken, authorizeRoles(ADMIN), getUser)
 
-router.get('/profile/:id', /**validateToken,*/ getProfile)
+router.get('/profile/:id', validateToken, getProfile)
 
 router.get('/project/:id', validateToken, getProject)
 
 //----------------------------- POST -------------------------------//
 
-router.post('/newProject', /*validateToken,*/ newProject)
+router.post('/newProject', validateToken, newProject)
 
 //----------------------------- PUT --------------------------------//
 
@@ -27,7 +27,7 @@ router.put('/editProject/:id', validateToken, editProject)
 
 //----------------------------- DELETE -----------------------------//
 
-router.delete('/:id', /*validateToken,*/ deleteUser)
-router.delete('/project/:id', /*validateToken,*/ deleteProject)
+router.delete('/:id', validateToken, deleteUser)
+router.delete('/project/:id', validateToken, deleteProject)
 
 module.exports = router

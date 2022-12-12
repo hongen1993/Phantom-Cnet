@@ -14,11 +14,13 @@ const validateToken = (req, res, next) => {
     next()
 }
 
-const authorizeRoles = (roles) => (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
+const authorizeRoles = (role) => (req, res, next) => {
+
+    if (role !== (req.user.role)) {
         res.status(403).json({ errorMessage: 'Not allowed' })
+    } else {
+        next()
     }
-    next()
 }
 
 module.exports = { validateToken, authorizeRoles }
