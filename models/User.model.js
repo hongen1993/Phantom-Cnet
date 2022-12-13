@@ -17,18 +17,18 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Name is required."],
     },
+    surname: {
+      type: String,
+      required: [true, "Surname is required."],
+    },
     password: {
       type: String,
       required: [true, "Password is required."],
       minLength: [6, 'Your password must be longer than 6 characters']
     },
     image: {
-      public_id: {
-        type: String,
-      },
-      url: {
-        type: String
-      }
+      type: String,
+      required: [true, "image is required"]
     },
     role: {
       type: String,
