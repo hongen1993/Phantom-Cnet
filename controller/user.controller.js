@@ -40,7 +40,6 @@ const getAllUsers = (req, res, next) => {
 const getUser = (req, res, next) => {
     try {
         const { id } = req.params
-        // const { offset = 0, limit = 12 } = req.query
 
         UNVALID_ID(id)
 
@@ -50,22 +49,7 @@ const getUser = (req, res, next) => {
                 const user = foundUser
                 ProjectModel
                     .find({ user: user.id })
-                    // .limit(limit)
-                    // .skip(limit * offset)
-                    // .sort({ createdAt: -1 })
                     .lean()
-                    // .then((projectsData) => {
-                    //     projects = projectsData
-                    //     return ProjectModel.countDocuments()
-                    // })
-                    // .then((countedProjects) => {
-                    //     res.status(200).json({
-                    //         success: true,
-                    //         results: { projects, user },
-                    //         page: +offset,
-                    //         maxPage: Math.floor(countedProjects / +limit),
-                    //     })
-                    // })
                     .then((projects) => {
                         res.status(200).json({
                             success: true,
@@ -82,7 +66,6 @@ const getUser = (req, res, next) => {
 const getProfile = (req, res, next) => {
     try {
         const id = req.user._id
-        // const { offset = 0, limit = 12 } = req.query
 
         UNVALID_ID(id)
 
@@ -91,23 +74,8 @@ const getProfile = (req, res, next) => {
             .then((foundUser) => {
                 const user = foundUser
                 ProjectModel
-                    .find({ user: user.id })
-                    // .limit(limit)
-                    // .skip(limit * offset)
-                    // .sort({ createdAt: -1 })
+                    .find({ user: { $in: [user.id] } })
                     .lean()
-                    // .then((projectsData) => {
-                    //     projects = projectsData
-                    //     return ProjectModel.countDocuments()
-                    // })
-                    // .then((countedProjects) => {
-                    //     res.status(200).json({
-                    //         success: true,
-                    //         results: { projects, user },
-                    //         page: +offset,
-                    //         maxPage: Math.floor(countedProjects / +limit),
-                    //     })
-                    // })
                     .then((projects) => {
                         res.status(200).json({
                             success: true,
@@ -201,12 +169,12 @@ const getProject = (req, res, next) => {
 const editProject = (req, res, next) => {
     try {
         const { id } = req.params
-        const { title, toDo, inProcess, done } = req.body
+        const { title, toDo, inProcess, done, user } = req.body
 
         UNVALID_ID(id)
 
         ProjectModel
-            .findByIdAndUpdate(id, { title, toDo, inProcess, done })
+            .findByIdAndUpdate(id, { title, toDo, inProcess, done, user })
             .then(() => {
                 res.status(204).json({
                     success: true,
