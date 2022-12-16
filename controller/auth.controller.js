@@ -8,7 +8,7 @@ const MESSAGE_ERROR_PROVIDE = 'Provide email, password and name'
 const MESSAGE_ERROR_LOGIN = 'Incorrect email or password';
 
 const SignUpController = (req, res, next) => {
-    const { email, name, password } = req.body
+    const { email, name, surname, password, image } = req.body
 
     UserModel
         .findOne({ email })
@@ -18,7 +18,7 @@ const SignUpController = (req, res, next) => {
             }
             const saltBcrypt = bcrypt.genSaltSync(SALT);
             const hashBcrypt = bcrypt.hashSync(password, saltBcrypt);
-            return UserModel.create({ email, password: hashBcrypt, name });
+            return UserModel.create({ email, password: hashBcrypt, name, surname, image });
         })
         .then(() => {
             res.sendStatus(201)

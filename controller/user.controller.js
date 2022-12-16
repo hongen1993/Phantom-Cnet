@@ -89,13 +89,13 @@ const getProfile = (req, res, next) => {
     }
 }
 
-const editUser = (req, res, next) => {
+const editProfile = (req, res, next) => {
     try {
         const { id } = req.params
-        const { email, name, password } = req.query
+        const { email, name, surname, password, image } = req.body
 
         UNVALID_ID(id)
-        bcryptEdit(id, email, name, password)
+        bcryptEdit(id, email, name, surname, password, image)
             .then(() => {
                 res.sendStatus(204).json({
                     success: true,
@@ -118,7 +118,10 @@ const deleteUser = (req, res, next) => {
         UserModel
             .findByIdAndDelete(id)
             .then(() => {
-                res.sendStatus(204)
+                res.sendStatus(204).json({
+                    success: true,
+                    message: 'User deleted succesfully'
+                })
             })
             .catch(next)
     } catch (err) {
@@ -209,4 +212,4 @@ const deleteProject = (req, res, next) => {
 
 }
 
-module.exports = { getAllUsers, getUser, getProfile, newProject, editUser, deleteUser, getProject, editProject, deleteProject }
+module.exports = { getAllUsers, getUser, getProfile, editProfile, newProject, deleteUser, getProject, editProject, deleteProject }

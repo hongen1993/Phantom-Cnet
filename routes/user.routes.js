@@ -3,13 +3,13 @@ const { validateToken, authorizeRoles } = require("../middleware/validateToken.m
 
 const { ADMIN } = require('../const/user.const');
 
-const { getAllUsers, getUser, getProfile, editUser, deleteUser, getProject, newProject, editProject, deleteProject } = require('../controller/user.controller');
+const { getAllUsers, getUser, getProfile, editProfile, deleteUser, getProject, newProject, editProject, deleteProject } = require('../controller/user.controller');
 
 //----------------------------- GET --------------------------------//
 
-router.get('/all', validateToken, authorizeRoles(ADMIN), getAllUsers)
+router.get('/all', validateToken, /*authorizeRoles(ADMIN),*/ getAllUsers)
 
-router.get('/:id', validateToken, authorizeRoles(ADMIN), getUser)
+router.get('/:id', validateToken, /*authorizeRoles(ADMIN),*/ getUser)
 
 router.get('/profile/:id', validateToken, getProfile)
 
@@ -21,7 +21,7 @@ router.post('/newProject', validateToken, newProject)
 
 //----------------------------- PUT --------------------------------//
 
-router.put('/editProfile/:id', validateToken, editUser)
+router.put('/editProfile/:id', validateToken, editProfile)
 
 router.put('/editProject/:id', validateToken, editProject)
 
